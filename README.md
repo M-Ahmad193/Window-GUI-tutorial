@@ -184,12 +184,13 @@ If you have questions, suggestions, or need help:
 
 ## 🌐 Live Demo
 
-[View Live Tutorial](https://window-gui-tutorial.vercel.app/https://window-gui-tutorial.vercel.app/)
+[View Live Tutorial](https://window-gui-tutorial.vercel.app/)
 
 ---
 
 ### ⭐ Star this repository if you find it helpful!
 
 **Happy Learning! 🚀**
+
 
 
