@@ -70,7 +70,7 @@ To use the code examples from this tutorial, you'll need:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/windows-gui-programming.git
+   git clone [https://github.com/yourusername/windows-gui-programming.git](https://github.com/M-Ahmad193/Window-GUI-tutorial.git)
    cd windows-gui-programming
    ```
 
@@ -191,3 +191,4 @@ If you have questions, suggestions, or need help:
 ### ⭐ Star this repository if you find it helpful!
 
 **Happy Learning! 🚀**
+
