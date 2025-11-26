@@ -70,7 +70,7 @@ To use the code examples from this tutorial, you'll need:
 
 1. **Clone the repository**
    ```bash
-   git clone [https://github.com/yourusername/windows-gui-programming.git](https://github.com/M-Ahmad193/Window-GUI-tutorial.git)
+   git clone https://github.com/M-Ahmad193/Window-GUI-tutorial.git
    cd windows-gui-programming
    ```
 
@@ -134,7 +134,7 @@ This tutorial website is built with modern web design principles:
 ```
 windows-gui-programming/
 │
-├── web.html           # Main tutorial website
+├── index.html           # Main tutorial website
 ├── resources.html     # Additional resources and references
 └── README.md         # This file
 ```
@@ -184,11 +184,12 @@ If you have questions, suggestions, or need help:
 
 ## 🌐 Live Demo
 
-[View Live Tutorial](#) *(Add your hosted URL here)*
+[View Live Tutorial](https://window-gui-tutorial.vercel.app/https://window-gui-tutorial.vercel.app/)
 
 ---
 
 ### ⭐ Star this repository if you find it helpful!
 
 **Happy Learning! 🚀**
+
 
