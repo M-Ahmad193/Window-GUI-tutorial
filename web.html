@@ -1,0 +1,3458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows GUI Programming with C++ | Learn Windows.h</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0078d4;
+            --primary-dark: #005a9e;
+            --secondary: #ff6b35;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --text: #333;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #f44336;
+            --purple: #8e44ad;
+            --teal: #16a085;
+            --blue: #3498db;
+            --green: #2ecc71;
+            --red: #e74c3c;
+            --yellow: #f1c40f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: white;
+            padding: 4rem 0;
+            margin: 2rem 0;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .hero-text {
+            text-align: center;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 120, 212, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .code-preview {
+            background: var(--dark);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .code-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(90deg, #ff5f56, #ffbd2e, #27c93f);
+            border-radius: 10px 10px 0 0;
+        }
+
+        .code-preview code {
+            color: #f8f8f2;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            display: block;
+            margin-top: 10px;
+        }
+
+        /* Main Content */
+        main {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 0;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tutorial Navigation */
+        .tutorial-nav {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .tutorial-nav h2 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .tutorial-nav-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .tutorial-nav-item {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tutorial-nav-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 120, 212, 0.1);
+        }
+
+        .tutorial-nav-item.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tutorial-nav-item i {
+            font-size: 1.2rem;
+        }
+
+        /* Tutorial Sections */
+        .tutorial-section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tutorial-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tutorial-header {
+            margin-bottom: 2rem;
+        }
+
+        .tutorial-header h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .tutorial-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .tutorial-header p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-top: 1.5rem;
+        }
+
+        /* Tutorial Content */
+        .tutorial-content {
+            margin-bottom: 3rem;
+        }
+
+        .tutorial-subsection {
+            margin-bottom: 2.5rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .tutorial-subsection h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tutorial-subsection h3 i {
+            font-size: 1.5rem;
+        }
+
+        .tutorial-subsection p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .function-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary);
+        }
+
+        .function-card h4 {
+            font-size: 1.3rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .function-description {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .function-usage,
+        .function-parameters {
+            background: #f0f7ff;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .function-usage h5,
+        .function-parameters h5 {
+            font-size: 1rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .function-usage p,
+        .function-parameters p {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        .function-parameters ul {
+            padding-left: 1.5rem;
+        }
+
+        .function-parameters li {
+            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* Code Example */
+        .code-example {
+            margin: 2rem 0;
+        }
+
+        .code-example h4 {
+            font-size: 1.3rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: var(--dark);
+            border-radius: 10px;
+            padding: 1.5rem;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .copy-btn.copied {
+            background: var(--success);
+        }
+
+        /* Interactive Demo */
+        .interactive-demo {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .interactive-demo h4 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .demo-controls {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .demo-controls h5 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .control-group {
+            margin-bottom: 1rem;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .control-group input,
+        .control-group select,
+        .control-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .demo-output {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .demo-result {
+            text-align: center;
+            width: 100%;
+        }
+
+        .demo-result h5 {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .demo-result p {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            border-left: 3px solid var(--primary);
+            text-align: left;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .run-demo-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .run-demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        /* Visual Guide */
+        .visual-guide {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .visual-guide h4 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .visual-guide-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .visual-guide-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .visual-guide-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .visual-guide-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .visual-guide-text h5 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .visual-guide-text p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .visual-guide-text ul {
+            padding-left: 1.5rem;
+        }
+
+        .visual-guide-text li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Project Application */
+        .project-application {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            color: white;
+        }
+
+        .project-application h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .project-application p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+
+        .project-application ul {
+            padding-left: 1.5rem;
+        }
+
+        .project-application li {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        /* Progress Tracker */
+        .progress-tracker {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .progress-title {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .progress-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .progress-item:hover {
+            transform: translateX(-5px);
+        }
+
+        .progress-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            margin-right: 10px;
+            position: relative;
+        }
+
+        .progress-item.completed .progress-circle {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .progress-item.completed .progress-circle::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+        }
+
+        .progress-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 3rem;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #999;
+        }
+
+        .developer-credit {
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .function-description {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-container {
+                grid-template-columns: 1fr;
+            }
+
+            .visual-guide-content {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-tracker {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <i class="fab fa-windows"></i>
+                <span>WinGUI C++</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#basics" onclick="showTutorial('basics'); return false;">Basics</a></li>
+                <li><a href="#controls" onclick="showTutorial('controls'); return false;">Controls</a></li>
+                <li><a href="#events" onclick="showTutorial('events'); return false;">Events</a></li>
+                <li><a href="#graphics" onclick="showTutorial('graphics'); return false;">Graphics</a></li>
+                <li><a href="#fileio" onclick="showTutorial('fileio'); return false;">File I/O</a></li>
+                <li><a href="#projects" onclick="showTutorial('projects'); return false;">Projects</a></li>
+                <li><a href="resources.html" target="_blank" style="color: var(--secondary); font-weight: 700;">
+                        <i class="fas fa-book-open"></i> Resources
+                    </a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Master Windows GUI Programming</h1>
+                <p>Learn to create stunning desktop applications using C++ and Windows.h API. From basic windows to
+                    complex interfaces - everything you need for your Matrix Operations and Encryption projects.</p>
+                <div class="cta-buttons">
+                    <a href="#basics" class="btn btn-primary" onclick="showTutorial('basics'); return false;">
+                        <i class="fas fa-play"></i> Start Learning
+                    </a>
+                    <a href="#projects" class="btn btn-secondary" onclick="showTutorial('projects'); return false;">
+                        <i class="fas fa-project-diagram"></i> View Projects
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="code-preview">
+                    <code>
+#include &lt;windows.h&gt;<br>
+LRESULT CALLBACK WindowProc(...)<br>
+{<br>
+&nbsp;&nbsp;switch(msg) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;case WM_PAINT:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Draw something<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+&nbsp;&nbsp;}<br>
+}
+                    </code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker">
+        <div class="progress-title">Your Progress</div>
+        <div class="progress-item completed" onclick="showTutorial('basics')">
+            <div class="progress-circle"></div>
+            <span class="progress-label">Basics</span>
+        </div>
+        <div class="progress-item completed" onclick="showTutorial('controls')">
+            <div class="progress-circle"></div>
+            <span class="progress-label">Controls</span>
+        </div>
+        <div class="progress-item" onclick="showTutorial('events')">
+            <div class="progress-circle"></div>
+            <span class="progress-label">Events</span>
+        </div>
+        <div class="progress-item" onclick="showTutorial('graphics')">
+            <div class="progress-circle"></div>
+            <span class="progress-label">Graphics</span>
+        </div>
+        <div class="progress-item" onclick="showTutorial('fileio')">
+            <div class="progress-circle"></div>
+            <span class="progress-label">File I/O</span>
+        </div>
+        <div class="progress-item" onclick="showTutorial('projects')">
+            <div class="progress-circle"></div>
+            <span class="progress-label">Projects</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Tutorial Navigation -->
+        <div class="tutorial-nav">
+            <h2>Tutorial Chapters</h2>
+            <div class="tutorial-nav-items">
+                <div class="tutorial-nav-item active" onclick="showTutorial('basics')">
+                    <i class="fas fa-window-maximize"></i>
+                    <span>Windows Basics</span>
+                </div>
+                <div class="tutorial-nav-item" onclick="showTutorial('controls')">
+                    <i class="fas fa-toggle-on"></i>
+                    <span>GUI Controls</span>
+                </div>
+                <div class="tutorial-nav-item" onclick="showTutorial('events')">
+                    <i class="fas fa-mouse-pointer"></i>
+                    <span>Event Handling</span>
+                </div>
+                <div class="tutorial-nav-item" onclick="showTutorial('graphics')">
+                    <i class="fas fa-paint-brush"></i>
+                    <span>Graphics & Drawing</span>
+                </div>
+                <div class="tutorial-nav-item" onclick="showTutorial('fileio')">
+                    <i class="fas fa-file"></i>
+                    <span>File I/O</span>
+                </div>
+                <div class="tutorial-nav-item" onclick="showTutorial('projects')">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Project Guides</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Windows Basics Tutorial -->
+        <section id="basics" class="tutorial-section active">
+            <div class="tutorial-header">
+                <h2>Windows Programming Basics</h2>
+                <p>Learn the fundamental concepts of Windows GUI programming and how to create your first window
+                    application.</p>
+            </div>
+
+            <div class="tutorial-content">
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-cube"></i> Understanding Windows Architecture</h3>
+                    <p>Windows GUI programming is based on the Windows API (Application Programming Interface), which
+                        provides functions for creating windows, handling user input, and drawing graphics. Before
+                        diving into code, let's understand the key components:</p>
+
+                    <ul>
+                        <li><strong>Window:</strong> A rectangular area on the screen where an application displays
+                            output and receives input</li>
+                        <li><strong>Message Loop:</strong> A mechanism that retrieves and dispatches messages to the
+                            appropriate window procedure</li>
+                        <li><strong>Window Procedure:</strong> A function that processes messages sent to a window</li>
+                        <li><strong>Device Context:</strong> A structure that defines a set of graphic objects and their
+                            attributes</li>
+                    </ul>
+
+                    <div class="visual-guide">
+                        <h4>Windows Architecture Overview</h4>
+                        <div class="visual-guide-content">
+                            <div class="visual-guide-image">
+                                <img src="https://www.simplilearn.com/ice9/free_resources_article_thumb/What_is_CPP.jpg"
+                                    alt="Windows Architecture">
+                            </div>
+                            <div class="visual-guide-text">
+                                <h5>How It Works</h5>
+                                <p>When you create a Windows application, the operating system sends messages to your
+                                    application when events occur (like mouse clicks or key presses). Your application
+                                    processes these messages in the message loop and responds accordingly.</p>
+                                <ul>
+                                    <li>System detects user action</li>
+                                    <li>System creates a message</li>
+                                    <li>Message is placed in application queue</li>
+                                    <li>Application retrieves and processes message</li>
+                                    <li>Application performs appropriate action</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-code"></i> Essential Functions</h3>
+                    <p>Let's explore the core functions you'll need to create a basic Windows application:</p>
+
+                    <div class="function-card">
+                        <h4>RegisterClassEx()</h4>
+                        <p>Registers a window class for subsequent use in calls to the CreateWindow or CreateWindowEx
+                            function.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>Before creating a window, you must register a window class that defines the window's
+                                    attributes and behavior.</p>
+                                <p>Essential for both Matrix and Encryption projects to set up the basic window
+                                    structure.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>lpwcx:</strong> Pointer to a WNDCLASSEX structure</li>
+                                    <li><strong>cbSize:</strong> Size of the structure</li>
+                                    <li><strong>style:</strong> Class styles</li>
+                                    <li><strong>lpfnWndProc:</strong> Pointer to window procedure</li>
+                                    <li><strong>hInstance:</strong> Handle to application instance</li>
+                                    <li><strong>hIcon:</strong> Handle to class icon</li>
+                                    <li><strong>hCursor:</strong> Handle to class cursor</li>
+                                    <li><strong>hbrBackground:</strong> Handle to class background brush</li>
+                                    <li><strong>lpszClassName:</strong> Pointer to class name string</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>CreateWindowEx()</h4>
+                        <p>Creates an overlapped, pop-up, or child window with an extended window style.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>This is the function that actually creates the window on the screen. You'll use it to
+                                    create the main window for your projects.</p>
+                                <p>For Matrix project: Create a window with grid layout for matrix input and output.</p>
+                                <p>For Encryption project: Create a window with text areas and encryption controls.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>dwExStyle:</strong> Extended window style</li>
+                                    <li><strong>lpClassName:</strong> Registered class name</li>
+                                    <li><strong>lpWindowName:</strong> Window title</li>
+                                    <li><strong>dwStyle:</strong> Window style</li>
+                                    <li><strong>x, y:</strong> Initial horizontal and vertical position</li>
+                                    <li><strong>nWidth, nHeight:</strong> Window width and height</li>
+                                    <li><strong>hWndParent:</strong> Handle to parent window</li>
+                                    <li><strong>hMenu:</strong> Handle to menu or child identifier</li>
+                                    <li><strong>hInstance:</strong> Handle to application instance</li>
+                                    <li><strong>lpParam:</strong> Additional application data</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>ShowWindow()</h4>
+                        <p>Sets the specified window's show state.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>After creating a window, you need to make it visible on the screen. This function
+                                    controls how the window is displayed.</p>
+                                <p>Essential for both projects to display the application window.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>hWnd:</strong> Handle to window</li>
+                                    <li><strong>nCmdShow:</strong> Show state (SW_SHOW, SW_HIDE, etc.)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>UpdateWindow()</h4>
+                        <p>Updates the client area of the specified window by sending a WM_PAINT message to the window.
+                        </p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>This function forces the window to repaint its client area immediately. Useful when
+                                    you need to update the display.</p>
+                                <p>For Matrix project: Update display when matrix operations are performed.</p>
+                                <p>For Encryption project: Update display when text is encrypted/decrypted.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>hWnd:</strong> Handle to window</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-play-circle"></i> Creating Your First Window</h3>
+                    <p>Now let's put these functions together to create a basic window application:</p>
+
+                    <div class="code-example">
+                        <h4>Basic Window Code</h4>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <pre><code class="language-cpp">#include &lt;windows.h&gt;
+
+// Window Procedure function
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    // Register the window class
+    const wchar_t CLASS_NAME[] = L"MyWindowClass";
+    
+    WNDCLASSEX wc = {};
+    wc.cbSize = sizeof(WNDCLASSEX);
+    wc.style = CS_HREDRAW | CS_VREDRAW;
+    wc.lpfnWndProc = WindowProc;
+    wc.hInstance = hInstance;
+    wc.lpszClassName = CLASS_NAME;
+    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+    wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+    
+    if (!RegisterClassEx(&wc)) {
+        MessageBox(NULL, L"Window Registration Failed!", L"Error", MB_ICONEXCLAMATION | MB_OK);
+        return 0;
+    }
+    
+    // Create the window
+    HWND hwnd = CreateWindowEx(
+        0,                              // Optional window styles
+        CLASS_NAME,                     // Window class
+        L"My First Window",             // Window title
+        WS_OVERLAPPEDWINDOW,           // Window style
+        CW_USEDEFAULT, CW_USEDEFAULT,  // Position (x, y)
+        800, 600,                      // Size (width, height)
+        NULL,                          // Parent window
+        NULL,                          // Menu
+        hInstance,                     // Instance handle
+        NULL                           // Additional application data
+    );
+    
+    if (hwnd == NULL) {
+        MessageBox(NULL, L"Window Creation Failed!", L"Error", MB_ICONEXCLAMATION | MB_OK);
+        return 0;
+    }
+    
+    ShowWindow(hwnd, nCmdShow);
+    UpdateWindow(hwnd);
+    
+    // Message loop
+    MSG msg = {};
+    while (GetMessage(&msg, NULL, 0, 0)) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+    
+    return 0;
+}
+
+// Window Procedure function
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    switch (uMsg) {
+        case WM_DESTROY:
+            PostQuitMessage(0);
+            return 0;
+        case WM_PAINT: {
+            PAINTSTRUCT ps;
+            HDC hdc = BeginPaint(hwnd, &ps);
+            
+            // Draw text
+            TextOut(hdc, 50, 50, L"Hello, Windows GUI!", 19);
+            
+            EndPaint(hwnd, &ps);
+            return 0;
+        }
+    }
+    return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h4>Interactive Window Creation Demo</h4>
+                        <div class="demo-container">
+                            <div class="demo-controls">
+                                <h5>Customize Your Window</h5>
+                                <div class="control-group">
+                                    <label for="windowTitle">Window Title:</label>
+                                    <input type="text" id="windowTitle" value="My Window">
+                                </div>
+                                <div class="control-group">
+                                    <label for="windowWidth">Window Width:</label>
+                                    <input type="number" id="windowWidth" value="800" min="200" max="1200">
+                                </div>
+                                <div class="control-group">
+                                    <label for="windowHeight">Window Height:</label>
+                                    <input type="number" id="windowHeight" value="600" min="200" max="800">
+                                </div>
+                                <div class="control-group">
+                                    <label for="backgroundColor">Background Color:</label>
+                                    <select id="backgroundColor">
+                                        <option value="COLOR_WINDOW+1">Default</option>
+                                        <option value="COLOR_ACTIVECAPTION">Active Caption</option>
+                                        <option value="COLOR_INACTIVECAPTION">Inactive Caption</option>
+                                        <option value="COLOR_BTNFACE">Button Face</option>
+                                    </select>
+                                </div>
+                                <button class="run-demo-btn" onclick="generateWindowCode()">Generate Code</button>
+                            </div>
+                            <div class="demo-output">
+                                <div class="demo-result">
+                                    <h5>Generated Code</h5>
+                                    <p id="generatedCode">// Customize your window parameters here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-application">
+                    <h4><i class="fas fa-lightbulb"></i> Application to Projects</h4>
+                    <p>Understanding these basic window creation functions is essential for both your Matrix Operations
+                        and Encryption projects:</p>
+                    <ul>
+                        <li><strong>Matrix Operations:</strong> Create a window with a grid layout for inputting matrix
+                            values and displaying results</li>
+                        <li><strong>Encryption/Decryption:</strong> Create a window with text areas for input and
+                            output, plus controls for encryption options</li>
+                    </ul>
+                    <p>In both projects, you'll need to customize the window size, appearance, and layout to accommodate
+                        the specific controls required for each application.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- GUI Controls Tutorial -->
+        <section id="controls" class="tutorial-section">
+            <div class="tutorial-header">
+                <h2>GUI Controls</h2>
+                <p>Learn about the various GUI controls available in Windows programming and how to use them in your
+                    projects.</p>
+            </div>
+
+            <div class="tutorial-content">
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-toggle-on"></i> Understanding GUI Controls</h3>
+                    <p>GUI controls are the building blocks of any Windows application. They allow users to interact
+                        with your program through buttons, text boxes, checkboxes, and other interface elements. For
+                        your Matrix Operations and Encryption projects, you'll need several types of controls:</p>
+
+                    <ul>
+                        <li><strong>Buttons:</strong> For triggering actions like "Calculate", "Encrypt", "Decrypt"</li>
+                        <li><strong>Edit Controls:</strong> For inputting matrix values and text to encrypt/decrypt</li>
+                        <li><strong>Static Controls:</strong> For displaying labels and results</li>
+                        <li><strong>Combo Boxes:</strong> For selecting encryption algorithms</li>
+                        <li><strong>Group Boxes:</strong> For organizing related controls</li>
+                    </ul>
+
+                    <div class="visual-guide">
+                        <h4>Common GUI Controls</h4>
+                        <div class="visual-guide-content">
+                            <div class="visual-guide-image">
+                                <img src="https://www.simplilearn.com/ice9/free_resources_article_thumb/What_is_CPP.jpg"
+                                    alt="GUI Controls">
+                            </div>
+                            <div class="visual-guide-text">
+                                <h5>Control Types</h5>
+                                <p>Windows provides a variety of predefined control classes that you can use in your
+                                    applications:</p>
+                                <ul>
+                                    <li><strong>BUTTON:</strong> Creates a button control</li>
+                                    <li><strong>EDIT:</strong> Creates an edit control for text input</li>
+                                    <li><strong>STATIC:</strong> Creates a static control for text or images</li>
+                                    <li><strong>COMBOBOX:</strong> Creates a combo box control</li>
+                                    <li><strong>LISTBOX:</strong> Creates a list box control</li>
+                                    <li><strong>SCROLLBAR:</strong> Creates a scroll bar control</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-code"></i> Essential Control Functions</h3>
+                    <p>Let's explore the core functions for creating and managing GUI controls:</p>
+
+                    <div class="function-card">
+                        <h4>CreateWindow() / CreateWindowEx()</h4>
+                        <p>Creates a child window control with the specified properties.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>This is the primary function for creating all types of controls. You'll use it
+                                    extensively in both projects.</p>
+                                <p>For Matrix project: Create edit controls for matrix input and static controls for
+                                    labels.</p>
+                                <p>For Encryption project: Create edit controls for text input/output and buttons for
+                                    encryption actions.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters for Controls</h5>
+                                <ul>
+                                    <li><strong>lpClassName:</strong> Control class name (e.g., "BUTTON", "EDIT")</li>
+                                    <li><strong>lpWindowName:</strong> Control text or caption</li>
+                                    <li><strong>dwStyle:</strong> Control style (WS_CHILD, WS_VISIBLE, etc.)</li>
+                                    <li><strong>x, y:</strong> Position relative to parent window</li>
+                                    <li><strong>nWidth, nHeight:</strong> Control dimensions</li>
+                                    <li><strong>hWndParent:</strong> Handle to parent window</li>
+                                    <li><strong>HMENU:</strong> Control identifier</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>SetWindowText()</h4>
+                        <p>Sets the text of a window or control.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>Use this function to change the text of controls dynamically, such as updating the
+                                    result display in your projects.</p>
+                                <p>For Matrix project: Display calculation results in static controls.</p>
+                                <p>For Encryption project: Display encrypted/decrypted text in edit controls.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>hWnd:</strong> Handle to window or control</li>
+                                    <li><strong>lpString:</strong> Pointer to text string</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>GetWindowText()</h4>
+                        <p>Retrieves the text of a window or control.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>Use this function to read the text from edit controls, such as matrix values or text
+                                    to encrypt.</p>
+                                <p>For Matrix project: Get matrix values from edit controls for calculations.</p>
+                                <p>For Encryption project: Get text from edit control for encryption.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>hWnd:</strong> Handle to window or control</li>
+                                    <li><strong>lpString:</strong> Buffer to receive text</li>
+                                    <li><strong>nMaxCount:</strong> Maximum number of characters to copy</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>EnableWindow()</h4>
+                        <p>Enables or disables mouse and keyboard input to the specified window or control.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>Use this function to enable or disable controls based on application state.</p>
+                                <p>For Matrix project: Disable calculate button until valid matrix values are entered.
+                                </p>
+                                <p>For Encryption project: Disable decrypt button until text is encrypted.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>hWnd:</strong> Handle to window or control</li>
+                                    <li><strong>bEnable:</strong> TRUE to enable, FALSE to disable</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-play-circle"></i> Creating Controls</h3>
+                    <p>Let's create a simple form with various controls:</p>
+
+                    <div class="code-example">
+                        <h4>Control Creation Code</h4>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <pre><code class="language-cpp">// Define control IDs
+#define ID_EDIT_INPUT    101
+#define ID_BUTTON_CALC   102
+#define ID_STATIC_RESULT 103
+
+// Add these controls in WM_CREATE case of WindowProc
+case WM_CREATE: {
+    // Create input edit control
+    HWND hEditInput = CreateWindowEx(
+        0, L"EDIT", L"",
+        WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL,
+        50, 50, 200, 25,
+        hwnd, (HMENU)ID_EDIT_INPUT, 
+        ((LPCREATESTRUCT)lParam)->hInstance, NULL
+    );
+    
+    // Create calculate button
+    HWND hButtonCalc = CreateWindowEx(
+        0, L"BUTTON", L"Calculate",
+        WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON,
+        50, 90, 100, 30,
+        hwnd, (HMENU)ID_BUTTON_CALC,
+        ((LPCREATESTRUCT)lParam)->hInstance, NULL
+    );
+    
+    // Create result static control
+    HWND hStaticResult = CreateWindowEx(
+        0, L"STATIC", L"Result: ",
+        WS_CHILD | WS_VISIBLE,
+        50, 140, 200, 25,
+        hwnd, (HMENU)ID_STATIC_RESULT,
+        ((LPCREATESTRUCT)lParam)->hInstance, NULL
+    );
+    
+    break;
+}
+
+// Handle button click in WM_COMMAND case
+case WM_COMMAND: {
+    switch (LOWORD(wParam)) {
+        case ID_BUTTON_CALC: {
+            // Get text from edit control
+            wchar_t inputText[256];
+            GetWindowText(GetDlgItem(hwnd, ID_EDIT_INPUT), inputText, 256);
+            
+            // Perform calculation (example: convert to integer and double)
+            int value = _wtoi(inputText);
+            int result = value * 2;
+            
+            // Display result
+            wchar_t resultText[256];
+            swprintf(resultText, 256, L"Result: %d", result);
+            SetWindowText(GetDlgItem(hwnd, ID_STATIC_RESULT), resultText);
+            
+            break;
+        }
+    }
+    break;
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h4>Interactive Control Creation Demo</h4>
+                        <div class="demo-container">
+                            <div class="demo-controls">
+                                <h5>Design Your Control</h5>
+                                <div class="control-group">
+                                    <label for="controlType">Control Type:</label>
+                                    <select id="controlType" onchange="updateControlOptions()">
+                                        <option value="BUTTON">Button</option>
+                                        <option value="EDIT">Edit Box</option>
+                                        <option value="STATIC">Static Text</option>
+                                        <option value="COMBOBOX">Combo Box</option>
+                                    </select>
+                                </div>
+                                <div class="control-group">
+                                    <label for="controlText">Control Text:</label>
+                                    <input type="text" id="controlText" value="Click Me">
+                                </div>
+                                <div class="control-group">
+                                    <label for="controlX">X Position:</label>
+                                    <input type="number" id="controlX" value="50" min="0" max="500">
+                                </div>
+                                <div class="control-group">
+                                    <label for="controlY">Y Position:</label>
+                                    <input type="number" id="controlY" value="50" min="0" max="300">
+                                </div>
+                                <div class="control-group">
+                                    <label for="controlWidth">Width:</label>
+                                    <input type="number" id="controlWidth" value="100" min="50" max="300">
+                                </div>
+                                <div class="control-group">
+                                    <label for="controlHeight">Height:</label>
+                                    <input type="number" id="controlHeight" value="30" min="20" max="100">
+                                </div>
+                                <div class="control-group" id="buttonStyleGroup">
+                                    <label for="buttonStyle">Button Style:</label>
+                                    <select id="buttonStyle">
+                                        <option value="BS_DEFPUSHBUTTON">Default Push Button</option>
+                                        <option value="BS_PUSHBUTTON">Push Button</option>
+                                        <option value="BS_CHECKBOX">Check Box</option>
+                                        <option value="BS_RADIOBUTTON">Radio Button</option>
+                                    </select>
+                                </div>
+                                <div class="control-group" id="editStyleGroup" style="display:none;">
+                                    <label for="editStyle">Edit Style:</label>
+                                    <select id="editStyle">
+                                        <option value="ES_AUTOHSCROLL">Auto Horizontal Scroll</option>
+                                        <option value="ES_PASSWORD">Password</option>
+                                        <option value="ES_MULTILINE">Multiline</option>
+                                        <option value="ES_NUMBER">Number Only</option>
+                                    </select>
+                                </div>
+                                <button class="run-demo-btn" onclick="generateControlCode()">Generate Code</button>
+                            </div>
+                            <div class="demo-output">
+                                <div class="demo-result">
+                                    <h5>Generated Code</h5>
+                                    <p id="generatedControlCode">// Customize your control here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-application">
+                    <h4><i class="fas fa-lightbulb"></i> Application to Projects</h4>
+                    <p>GUI controls are essential for both your Matrix Operations and Encryption projects:</p>
+                    <ul>
+                        <li><strong>Matrix Operations:</strong>
+                            <ul>
+                                <li>Create 9 edit controls for the 3x3 matrix input</li>
+                                <li>Create buttons for operations (Add, Subtract, Multiply, etc.)</li>
+                                <li>Create static controls for labels and result display</li>
+                                <li>Organize controls with group boxes for better layout</li>
+                            </ul>
+                        </li>
+                        <li><strong>Encryption/Decryption:</strong>
+                            <ul>
+                                <li>Create edit controls for plaintext and ciphertext</li>
+                                <li>Create buttons for Encrypt and Decrypt actions</li>
+                                <li>Create a combo box for selecting encryption algorithms</li>
+                                <li>Create edit controls for encryption keys</li>
+                                <li>Create static controls for labels and status messages</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Event Handling Tutorial -->
+        <section id="events" class="tutorial-section">
+            <div class="tutorial-header">
+                <h2>Event Handling</h2>
+                <p>Learn how to handle user interactions and system events in your Windows applications.</p>
+            </div>
+
+            <div class="tutorial-content">
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-mouse-pointer"></i> Understanding Windows Messages</h3>
+                    <p>Windows applications are event-driven, meaning they respond to events triggered by user actions
+                        or system notifications. These events are communicated through messages sent to application's
+                        windows. Understanding how to handle these messages is crucial for creating interactive
+                        applications.</p>
+
+                    <ul>
+                        <li><strong>Messages:</strong> Notifications sent to a window when an event occurs</li>
+                        <li><strong>Message Loop:</strong> Retrieves messages from the queue and dispatches them</li>
+                        <li><strong>Window Procedure:</strong> Function that processes messages for a window</li>
+                        <li><strong>Message Handlers:</strong> Code that responds to specific messages</li>
+                    </ul>
+
+                    <div class="visual-guide">
+                        <h4>Message Processing Flow</h4>
+                        <div class="visual-guide-content">
+                            <div class="visual-guide-image">
+                                <img src="https://images.unsplash.com/photo-1529101091764-c3526daf38fe?q=80&w=1333&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                    alt="Message Processing Flow">
+                            </div>
+                            <div class="visual-guide-text">
+                                <h5>How Messages Work</h5>
+                                <p>When a user interacts with your application, Windows generates messages and places
+                                    them in a queue. Your application's message loop retrieves these messages and sends
+                                    them to the appropriate window procedure for processing.</p>
+                                <ul>
+                                    <li>User performs action (clicks button, types text)</li>
+                                    <li>Windows generates a message</li>
+                                    <li>Message is placed in application queue</li>
+                                    <li>Message loop retrieves message</li>
+                                    <li>Window procedure processes message</li>
+                                    <li>Application responds to event</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-code"></i> Essential Event Functions</h3>
+                    <p>Let's explore core functions and concepts for handling events:</p>
+
+                    <div class="function-card">
+                        <h4>Window Procedure (WindowProc)</h4>
+                        <p>An application-defined function that processes messages sent to a window.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>The Window Procedure is the heart of your application's event handling. It receives
+                                    all messages for a window and determines how to respond to them.</p>
+                                <p>For Matrix project: Handle button clicks for matrix operations and input validation.
+                                </p>
+                                <p>For Encryption project: Handle button clicks for encryption/decryption and algorithm
+                                    selection.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>hwnd:</strong> Handle to window</li>
+                                    <li><strong>uMsg:</strong> Message identifier</li>
+                                    <li><strong>wParam:</strong> Additional message information</li>
+                                    <li><strong>lParam:</strong> Additional message information</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>GetMessage()</h4>
+                        <p>Retrieves a message from the calling thread's message queue.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>This function is the core of the message loop. It waits for a message to be placed in
+                                    the queue and then retrieves it for processing.</p>
+                                <p>Essential for both projects to maintain application responsiveness.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>lpMsg:</strong> Pointer to MSG structure to receive message</li>
+                                    <li><strong>hWnd:</strong> Handle to window (NULL for any window)</li>
+                                    <li><strong>wMsgFilterMin:</strong> Lowest message value to retrieve</li>
+                                    <li><strong>wMsgFilterMax:</strong> Highest message value to retrieve</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>TranslateMessage()</h4>
+                        <p>Translates virtual-key messages into character messages.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>This function converts keyboard input (WM_KEYDOWN, WM_KEYUP) into character messages
+                                    (WM_CHAR), making text input easier to handle.</p>
+                                <p>For Matrix project: Handle numeric input for matrix values.</p>
+                                <p>For Encryption project: Handle text input for encryption.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>lpMsg:</strong> Pointer to MSG structure containing message</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>DispatchMessage()</h4>
+                        <p>Dispatches a message to a window procedure.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>This function sends the message to the appropriate window procedure for processing.
+                                    It's a crucial part of the message loop.</p>
+                                <p>Essential for both projects to ensure messages are properly handled.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>lpMsg:</strong> Pointer to MSG structure containing message</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-play-circle"></i> Handling Common Events</h3>
+                    <p>Let's explore how to handle common events in your applications:</p>
+
+                    <div class="code-example">
+                        <h4>Event Handling Code</h4>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <pre><code class="language-cpp">// Window Procedure with common event handlers
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    switch (uMsg) {
+        // Window creation event
+        case WM_CREATE: {
+            // Initialize controls and resources
+            return 0;
+        }
+        
+        // Command event (button clicks, menu selections)
+        case WM_COMMAND: {
+            // Get control ID
+            int wmId = LOWORD(wParam);
+            // Get notification code
+            int wmEvent = HIWORD(wParam);
+            
+            switch (wmId) {
+                case ID_BUTTON_CALCULATE: {
+                    // Handle calculate button click
+                    // Get input values
+                    // Perform calculation
+                    // Update display
+                    return 0;
+                }
+                case ID_BUTTON_ENCRYPT: {
+                    // Handle encrypt button click
+                    // Get plaintext
+                    // Perform encryption
+                    // Display ciphertext
+                    return 0;
+                }
+                case ID_COMBO_ALGORITHM: {
+                    // Handle algorithm selection change
+                    if (wmEvent == CBN_SELCHANGE) {
+                        // Update encryption method
+                    }
+                    return 0;
+                }
+            }
+            break;
+        }
+        
+        // Keyboard event
+        case WM_CHAR: {
+            // Handle character input
+            wchar_t ch = (wchar_t)wParam;
+            
+            // For Matrix project: Validate numeric input
+            if (ch < '0' || ch > '9') {
+                // Reject non-numeric input
+                return 0;
+            }
+            break;
+        }
+        
+        // Mouse event
+        case WM_LBUTTONDOWN: {
+            // Handle left mouse button click
+            int xPos = GET_X_LPARAM(lParam);
+            int yPos = GET_Y_LPARAM(lParam);
+            
+            // Check if click is within a specific area
+            if (xPos >= 50 && xPos <= 150 && yPos >= 50 && yPos <= 80) {
+                // Handle click in specific area
+            }
+            return 0;
+        }
+        
+        // Paint event
+        case WM_PAINT: {
+            PAINTSTRUCT ps;
+            HDC hdc = BeginPaint(hwnd, &ps);
+            
+            // Perform drawing operations
+            // For Matrix project: Draw matrix grid
+            // For Encryption project: Draw status indicators
+            
+            EndPaint(hwnd, &ps);
+            return 0;
+        }
+        
+        // Window destruction event
+        case WM_DESTROY: {
+            // Clean up resources
+            PostQuitMessage(0);
+            return 0;
+        }
+    }
+    
+    // Default message handling
+    return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h4>Interactive Event Handling Demo</h4>
+                        <div class="demo-container">
+                            <div class="demo-controls">
+                                <h5>Select an Event Type</h5>
+                                <div class="control-group">
+                                    <label for="eventType">Event Type:</label>
+                                    <select id="eventType" onchange="updateEventDemo()">
+                                        <option value="WM_COMMAND">Button Click (WM_COMMAND)</option>
+                                        <option value="WM_CHAR">Keyboard Input (WM_CHAR)</option>
+                                        <option value="WM_PAINT">Window Painting (WM_PAINT)</option>
+                                        <option value="WM_LBUTTONDOWN">Mouse Click (WM_LBUTTONDOWN)</option>
+                                    </select>
+                                </div>
+                                <div id="commandOptions" class="control-group">
+                                    <label for="controlId">Control ID:</label>
+                                    <input type="number" id="controlId" value="101">
+                                </div>
+                                <div id="charOptions" class="control-group" style="display:none;">
+                                    <label for="charInput">Character Input:</label>
+                                    <input type="text" id="charInput" value="A" maxlength="1">
+                                </div>
+                                <div id="paintOptions" class="control-group" style="display:none;">
+                                    <label for="paintText">Text to Draw:</label>
+                                    <input type="text" id="paintText" value="Hello, World!">
+                                </div>
+                                <div id="mouseOptions" class="control-group" style="display:none;">
+                                    <label for="mouseX">X Position:</label>
+                                    <input type="number" id="mouseX" value="100">
+                                    <label for="mouseY">Y Position:</label>
+                                    <input type="number" id="mouseY" value="100">
+                                </div>
+                                <button class="run-demo-btn" onclick="generateEventCode()">Generate Code</button>
+                            </div>
+                            <div class="demo-output">
+                                <div class="demo-result">
+                                    <h5>Generated Event Handler</h5>
+                                    <p id="generatedEventCode">// Select an event type to generate code</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-application">
+                    <h4><i class="fas fa-lightbulb"></i> Application to Projects</h4>
+                    <p>Event handling is critical for both your Matrix Operations and Encryption projects:</p>
+                    <ul>
+                        <li><strong>Matrix Operations:</strong>
+                            <ul>
+                                <li>Handle button clicks for matrix operations (Add, Subtract, Multiply, etc.)</li>
+                                <li>Validate numeric input in edit controls</li>
+                                <li>Handle clear/reset button clicks</li>
+                                <li>Display calculation results</li>
+                                <li>Handle window resizing to maintain layout</li>
+                            </ul>
+                        </li>
+                        <li><strong>Encryption/Decryption:</strong>
+                            <ul>
+                                <li>Handle Encrypt and Decrypt button clicks</li>
+                                <li>Handle algorithm selection changes</li>
+                                <li>Validate encryption key input</li>
+                                <li>Handle file open/save operations</li>
+                                <li>Display encryption status and results</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Graphics & Drawing Tutorial -->
+        <section id="graphics" class="tutorial-section">
+            <div class="tutorial-header">
+                <h2>Graphics & Drawing</h2>
+                <p>Learn how to create graphics and draw shapes, text, and images in your Windows applications.</p>
+            </div>
+
+            <div class="tutorial-content">
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-paint-brush"></i> Understanding GDI</h3>
+                    <p>The Graphics Device Interface (GDI) is the core of Windows graphics programming. It provides
+                        functions for drawing shapes, text, and images on the screen. For your projects, you'll use GDI
+                        to create visual elements and enhance the user interface.</p>
+
+                    <ul>
+                        <li><strong>Device Context (DC):</strong> A structure that defines graphic objects and their
+                            attributes</li>
+                        <li><strong>Graphic Objects:</strong> Pens, brushes, fonts, bitmaps, and palettes</li>
+                        <li><strong>Drawing Functions:</strong> Functions for drawing shapes, lines, and text</li>
+                        <li><strong>Mapping Modes:</strong> Ways to map logical coordinates to device coordinates</li>
+                    </ul>
+
+                    <div class="visual-guide">
+                        <h4>GDI Drawing Process</h4>
+                        <div class="visual-guide-content">
+                            <div class="visual-guide-image">
+                                <img src="https://modrika.com/wp-content/uploads/2014/02/c-programming-language.jpg"
+                                    alt="GDI Drawing Process">
+                            </div>
+                            <div class="visual-guide-text">
+                                <h5>How GDI Works</h5>
+                                <p>When you need to draw in a window, you first obtain a device context, select
+                                    appropriate graphic objects (like pens and brushes), and then use drawing functions
+                                    to create graphics.</p>
+                                <ul>
+                                    <li>Begin painting (BeginPaint)</li>
+                                    <li>Get device context</li>
+                                    <li>Select graphic objects (pen, brush, font)</li>
+                                    <li>Perform drawing operations</li>
+                                    <li>Clean up objects</li>
+                                    <li>End painting (EndPaint)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-code"></i> Essential Graphics Functions</h3>
+                    <p>Let's explore the core functions for graphics and drawing:</p>
+
+                    <div class="function-card">
+                        <h4>BeginPaint() / EndPaint()</h4>
+                        <p>Prepares the specified window for painting and marks the end of painting.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>These functions prepare the window for painting and clean up after painting is
+                                    complete. They must be used in pairs when handling WM_PAINT messages.</p>
+                                <p>For Matrix project: Draw matrix grid and values.</p>
+                                <p>For Encryption project: Draw encryption status indicators.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>BeginPaint:</strong>
+                                        <ul>
+                                            <li>hwnd: Handle to window</li>
+                                            <li>lpPaint: Pointer to PAINTSTRUCT structure</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>EndPaint:</strong>
+                                        <ul>
+                                            <li>hwnd: Handle to window</li>
+                                            <li>lpPaint: Pointer to PAINTSTRUCT structure</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>CreatePen() / CreateBrush()</h4>
+                        <p>Creates a logical pen or brush that can be selected into a device context.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>Pens are used to draw lines and outlines, while brushes are used to fill shapes.
+                                    These functions allow you to customize the appearance of your graphics.</p>
+                                <p>For Matrix project: Create colored pens for highlighting matrix elements.</p>
+                                <p>For Encryption project: Create colored brushes for status indicators.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>CreatePen:</strong>
+                                        <ul>
+                                            <li>nPenStyle: Pen style (PS_SOLID, PS_DASH, etc.)</li>
+                                            <li>nWidth: Pen width</li>
+                                            <li>crColor: Pen color (RGB value)</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>CreateBrush:</strong>
+                                        <ul>
+                                            <li>crColor: Brush color (RGB value)</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>SelectObject()</h4>
+                        <p>Selects an object into the specified device context.</p>
+
+                        <div class="function-description">
+                            <h5>Why Use It?</h5>
+                            <p>This function is used to select pens, brushes, fonts, and other objects into a device
+                                context, making them active for drawing operations.</p>
+                            <p>Essential for both projects to customize drawing appearance.</p>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>hdc:</strong> Handle to device context</li>
+                                    <li><strong>hgdiobj:</strong> Handle to object to select</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>Rectangle() / Ellipse() / LineTo()</h4>
+                        <p>Draws shapes and lines on the screen.</p>
+
+                        <div class="function-description">
+                            <h5>Why Use It?</h5>
+                            <p>These functions are used to draw basic shapes and lines, which are the building blocks of
+                                more complex graphics.</p>
+                            <p>For Matrix project: Draw matrix grid and cells.</p>
+                            <p>For Encryption project: Draw progress bars and status indicators.</p>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>Rectangle/Ellipse:</strong>
+                                        <ul>
+                                            <li>hdc: Handle to device context</li>
+                                            <li>nLeftRect, nTopRect: Upper-left corner</li>
+                                            <li>nRightRect, nBottomRect: Lower-right corner</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>LineTo:</strong>
+                                        <ul>
+                                            <li>hdc: Handle to device context</li>
+                                            <li>nXEnd, nYEnd: End point of line</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>TextOut() / DrawText()</h4>
+                        <p>Writes a character string at the specified location.</p>
+
+                        <div class="function-description">
+                            <h5>Why Use It?</h5>
+                            <p>These functions are used to display text in your application, which is essential for
+                                labels, results, and status messages.</p>
+                            <p>For Matrix project: Display matrix values and results.</p>
+                            <p>For Encryption project: Display encryption status and results.</p>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>TextOut:</strong>
+                                        <ul>
+                                            <li>hdc: Handle to device context</li>
+                                            <li>nXStart, nYStart: Starting position</li>
+                                            <li>lpString: Pointer to string</li>
+                                            <li>cbString: Length of string</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>DrawText:</strong>
+                                        <ul>
+                                            <li>hdc: Handle to device context</li>
+                                            <li>lpchText: Pointer to text</li>
+                                            <li>cchText: Length of text</li>
+                                            <li>lprc: Pointer to rectangle</li>
+                                            <li>format: Formatting options</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-play-circle"></i> Creating Graphics</h3>
+                    <p>Let's create a simple drawing application:</p>
+
+                    <div class="code-example">
+                        <h4>Graphics Drawing Code</h4>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <pre><code class="language-cpp">// In WM_PAINT case of WindowProc
+case WM_PAINT: {
+    PAINTSTRUCT ps;
+    HDC hdc = BeginPaint(hwnd, &ps);
+    
+    // Create a red pen for drawing
+    HPEN hRedPen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
+    HPEN hOldPen = (HPEN)SelectObject(hdc, hRedPen);
+    
+    // Create a blue brush for filling
+    HBRUSH hBlueBrush = CreateSolidBrush(RGB(0, 0, 255));
+    HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hBlueBrush);
+    
+    // Draw a rectangle
+    Rectangle(hdc, 50, 50, 200, 150);
+    
+    // Select a green pen
+    HPEN hGreenPen = CreatePen(PS_SOLID, 2, RGB(0, 255, 0));
+    SelectObject(hdc, hGreenPen);
+    
+    // Draw an ellipse
+    Ellipse(hdc, 250, 50, 400, 200);
+    
+    // Select a black pen for text
+    HPEN hBlackPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
+    SelectObject(hdc, hBlackPen);
+    
+    // Draw text
+    TextOut(hdc, 50, 200, L"Graphics Demo", 13);
+    
+    // Draw text with formatting
+    RECT textRect = {50, 230, 400, 260};
+    DrawText(hdc, L"Formatted text drawing", -1, &textRect, DT_CENTER | DT_VCENTER);
+    
+    // Clean up objects
+    SelectObject(hdc, hOldPen);
+    SelectObject(hdc, hOldBrush);
+    DeleteObject(hRedPen);
+    DeleteObject(hGreenPen);
+    DeleteObject(hBlackPen);
+    DeleteObject(hBlueBrush);
+    
+    EndPaint(hwnd, &ps);
+    return 0;
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h4>Interactive Graphics Demo</h4>
+                        <div class="demo-container">
+                            <div class="demo-controls">
+                                <h5>Design Your Graphics</h5>
+                                <div class="control-group">
+                                    <label for="shapeType">Shape Type:</label>
+                                    <select id="shapeType" onchange="updateShapeOptions()">
+                                        <option value="Rectangle">Rectangle</option>
+                                        <option value="Ellipse">Ellipse</option>
+                                        <option value="Line">Line</option>
+                                        <option value="Text">Text</option>
+                                    </select>
+                                </div>
+                                <div class="control-group">
+                                    <label for="shapeX">X Position:</label>
+                                    <input type="number" id="shapeX" value="100" min="0" max="500">
+                                </div>
+                                <div class="control-group">
+                                    <label for="shapeY">Y Position:</label>
+                                    <input type="number" id="shapeY" value="100" min="0" max="300">
+                                </div>
+                                <div class="control-group">
+                                    <label for="shapeWidth">Width:</label>
+                                    <input type="number" id="shapeWidth" value="200" min="50" max="300">
+                                </div>
+                                <div class="control-group">
+                                    <label for="shapeHeight">Height:</label>
+                                    <input type="number" id="shapeHeight" value="150" min="50" max="200">
+                                </div>
+                                <div class="control-group">
+                                    <label for="penColor">Pen Color:</label>
+                                    <select id="penColor">
+                                        <option value="RGB(255, 0, 0)">Red</option>
+                                        <option value="RGB(0, 255, 0)">Green</option>
+                                        <option value="RGB(0, 0, 255)">Blue</option>
+                                        <option value="RGB(0, 0, 0)">Black</option>
+                                    </select>
+                                </div>
+                                <div class="control-group">
+                                    <label for="brushColor">Brush Color:</label>
+                                    <select id="brushColor">
+                                        <option value="RGB(255, 0, 0)">Red</option>
+                                        <option value="RGB(0, 255, 0)">Green</option>
+                                        <option value="RGB(0, 0, 255)">Blue</option>
+                                        <option value="RGB(255, 255, 255)">White</option>
+                                    </select>
+                                </div>
+                                <div class="control-group" id="textOptions" style="display:none;">
+                                    <label for="textContent">Text Content:</label>
+                                    <input type="text" id="textContent" value="Hello, World!">
+                                </div>
+                                <button class="run-demo-btn" onclick="generateGraphicsCode()">Generate Code</button>
+                            </div>
+                            <div class="demo-output">
+                                <div class="demo-result">
+                                    <h5>Generated Graphics Code</h5>
+                                    <p id="generatedGraphicsCode">// Customize your graphics here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-application">
+                    <h4><i class="fas fa-lightbulb"></i> Application to Projects</h4>
+                    <p>Graphics and drawing are important for enhancing user experience in both your projects:</p>
+                    <ul>
+                        <li><strong>Matrix Operations:</strong>
+                            <ul>
+                                <li>Draw a grid for the 3x3 matrix</li>
+                                <li>Highlight cells during input or calculation</li>
+                                <li>Use different colors to distinguish input and output matrices</li>
+                                <li>Draw arrows or lines to show operations</li>
+                                <li>Create visual representations of matrix transformations</li>
+                            </ul>
+                        </li>
+                        <li><strong>Encryption/Decryption:</strong>
+                            <ul>
+                                <li>Draw progress bars for encryption operations</li>
+                                <li>Use color coding to indicate encryption status</li>
+                                <li>Create visual representations of encryption algorithms</li>
+                                <li>Draw lock/unlock icons to indicate encryption state</li>
+                                <li>Create visual feedback for user actions</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- File I/O Tutorial -->
+        <section id="fileio" class="tutorial-section">
+            <div class="tutorial-header">
+                <h2>File I/O Operations</h2>
+                <p>Learn how to read from and write to files in your Windows applications.</p>
+            </div>
+
+            <div class="tutorial-content">
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-file"></i> Understanding File Operations</h3>
+                    <p>File I/O (Input/Output) operations allow your applications to read data from and write data to
+                        files. For your projects, you'll use file operations to save and load matrix data and to
+                        read/write encrypted text files.</p>
+
+                    <ul>
+                        <li><strong>File Handles:</strong> References to open files</li>
+                        <li><strong>File Modes:</strong> Read, write, append, etc.</li>
+                        <li><strong>File Operations:</strong> Open, read, write, close</li>
+                        <li><strong>File Dialogs:</strong> Common dialogs for file selection</li>
+                    </ul>
+
+                    <div class="visual-guide">
+                        <h4>File I/O Process</h4>
+                        <div class="visual-guide-content">
+                            <div class="visual-guide-image">
+                                <img src="https://modrika.com/wp-content/uploads/2014/02/c-programming-language.jpg"
+                                    alt="File I/O Process">
+                            </div>
+                            <div class="visual-guide-text">
+                                <h5>How File Operations Work</h5>
+                                <p>When working with files, you typically follow a sequence of operations: open file,
+                                    read or write data, and then close file. Windows provides both low-level and
+                                    high-level functions for file operations.</p>
+                                <ul>
+                                    <li>Open file (CreateFile, fopen)</li>
+                                    <li>Read from file (ReadFile, fread)</li>
+                                    <li>Write to file (WriteFile, fwrite)</li>
+                                    <li>Close file (CloseHandle, fclose)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-code"></i> Essential File I/O Functions</h3>
+                    <p>Let's explore the core functions for file operations:</p>
+
+                    <div class="function-card">
+                        <h4>GetOpenFileName() / GetSaveFileName()</h4>
+                        <p>Displays a common dialog box that allows user to specify a file to open or save.</p>
+
+                        <div class="function-description">
+                            <div class="function-usage">
+                                <h5>Why Use It?</h5>
+                                <p>These functions provide a standard file selection dialog that users are familiar
+                                    with, making your application more user-friendly.</p>
+                                <p>For Matrix project: Allow users to open/save matrix files.</p>
+                                <p>For Encryption project: Allow users to open/save text files for encryption.</p>
+                            </div>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>lpofn:</strong> Pointer to OPENFILENAME structure</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>CreateFile()</h4>
+                        <p>Creates or opens a file, file stream, directory, physical disk, volume, console buffer, tape
+                            drive, communications resource, mailslot, or named pipe.</p>
+
+                        <div class="function-description">
+                            <h5>Why Use It?</h5>
+                            <p>This is a low-level function for file operations that provides more control than standard
+                                C file functions.</p>
+                            <p>For Matrix project: Open files for matrix data storage.</p>
+                            <p>For Encryption project: Open files for text encryption/decryption.</p>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>lpFileName:</strong> File name</li>
+                                    <li><strong>dwDesiredAccess:</strong> Access mode (GENERIC_READ, GENERIC_WRITE)</li>
+                                    <li><strong>dwShareMode:</strong> Share mode</li>
+                                    <li><strong>lpSecurityAttributes:</strong> Security attributes</li>
+                                    <li><strong>dwCreationDisposition:</strong> Creation disposition</li>
+                                    <li><strong>dwFlagsAndAttributes:</strong> File attributes</li>
+                                    <li><strong>hTemplateFile:</strong> Template file</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>ReadFile() / WriteFile()</h4>
+                        <p>Reads from or writes to a file.</p>
+
+                        <div class="function-description">
+                            <h5>Why Use It?</h5>
+                            <p>These functions are used to read data from and write data to files opened with
+                                CreateFile.</p>
+                            <p>For Matrix project: Read/write matrix data.</p>
+                            <p>For Encryption project: Read/write text for encryption.</p>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>hFile:</strong> Handle to file</li>
+                                    <li><strong>lpBuffer:</strong> Data buffer</li>
+                                    <li><strong>nNumberOfBytesToRead/Write:</strong> Number of bytes</li>
+                                    <li><strong>lpNumberOfBytesRead/Written:</strong> Pointer to number of bytes</li>
+                                    <li><strong>lpOverlapped:</strong> Overlapped structure</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-card">
+                        <h4>CloseHandle()</h4>
+                        <p>Closes an open object handle.</p>
+
+                        <div class="function-description">
+                            <h5>Why Use It?</h5>
+                            <p>This function is used to close file handles and release system resources. It's essential
+                                to close files when you're done with them.</p>
+                            <p>Essential for both projects to properly manage file resources.</p>
+                            <div class="function-parameters">
+                                <h5>Parameters</h5>
+                                <ul>
+                                    <li><strong>hObject:</strong> Handle to object</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-play-circle"></i> File Operations Example</h3>
+                    <p>Let's create a simple file operations example:</p>
+
+                    <div class="code-example">
+                        <h4>File I/O Code</h4>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <pre><code class="language-cpp">// Function to open a file dialog and read file content
+void OpenFile(HWND hwnd) {
+    OPENFILENAME ofn;
+    wchar_t fileName[MAX_PATH] = L"";
+    
+    // Initialize OPENFILENAME structure
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = hwnd;
+    ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
+    ofn.lpstrFile = fileName;
+    ofn.nMaxFile = MAX_PATH;
+    ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+    ofn.lpstrDefExt = L"txt";
+    
+    // Display Open dialog
+    if (GetOpenFileName(&ofn)) {
+        // Open file for reading
+        HANDLE hFile = CreateFile(
+            fileName,           // File name
+            GENERIC_READ,       // Open for reading
+            FILE_SHARE_READ,    // Share for reading
+            NULL,               // Default security
+            OPEN_EXISTING,      // Existing file only
+            FILE_ATTRIBUTE_NORMAL, // Normal file
+            NULL                // No template
+        );
+        
+        if (hFile != INVALID_HANDLE_VALUE) {
+            // Read file content
+            DWORD bytesRead;
+            char buffer[1024];
+            
+            if (ReadFile(hFile, buffer, sizeof(buffer) - 1, &bytesRead, NULL)) {
+                buffer[bytesRead] = '\0'; // Null-terminate
+                
+                // Convert to wide string for display
+                wchar_t wideBuffer[1024];
+                MultiByteToWideChar(CP_ACP, 0, buffer, -1, wideBuffer, 1024);
+                
+                // Display content in edit control
+                SetWindowText(GetDlgItem(hwnd, ID_EDIT_CONTENT), wideBuffer);
+            }
+            
+            // Close file
+            CloseHandle(hFile);
+        }
+    }
+}
+
+// Function to save content to file
+void SaveFile(HWND hwnd) {
+    OPENFILENAME ofn;
+    wchar_t fileName[MAX_PATH] = L"";
+    
+    // Initialize OPENFILENAME structure
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = hwnd;
+    ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
+    ofn.lpstrFile = fileName;
+    ofn.nMaxFile = MAX_PATH;
+    ofn.Flags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
+    ofn.lpstrDefExt = L"txt";
+    
+    // Display Save dialog
+    if (GetSaveFileName(&ofn)) {
+        // Get content from edit control
+        wchar_t content[4096];
+        GetWindowText(GetDlgItem(hwnd, ID_EDIT_CONTENT), content, 4096);
+        
+        // Convert to multibyte for file writing
+        char buffer[4096];
+        WideCharToMultiByte(CP_ACP, 0, content, -1, buffer, 4096, NULL, NULL);
+        
+        // Open file for writing
+        HANDLE hFile = CreateFile(
+            fileName,           // File name
+            GENERIC_WRITE,      // Open for writing
+            0,                  // Do not share
+            NULL,               // Default security
+            CREATE_ALWAYS,      // Create or overwrite
+            FILE_ATTRIBUTE_NORMAL, // Normal file
+            NULL                // No template
+        );
+        
+        if (hFile != INVALID_HANDLE_VALUE) {
+            // Write content to file
+            DWORD bytesWritten;
+            WriteFile(hFile, buffer, strlen(buffer), &bytesWritten, NULL);
+            
+            // Close file
+            CloseHandle(hFile);
+            
+            MessageBox(hwnd, L"File saved successfully!", L"Success", MB_OK | MB_ICONINFORMATION);
+        }
+    }
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h4>Interactive File I/O Demo</h4>
+                        <div class="demo-container">
+                            <div class="demo-controls">
+                                <h5>File Operation Type</h5>
+                                <div class="control-group">
+                                    <label for="fileOperation">Operation:</label>
+                                    <select id="fileOperation" onchange="updateFileOptions()">
+                                        <option value="open">Open File</option>
+                                        <option value="save">Save File</option>
+                                        <option value="append">Append to File</option>
+                                    </select>
+                                </div>
+                                <div class="control-group">
+                                    <label for="fileType">File Type:</label>
+                                    <select id="fileType">
+                                        <option value="Text Files (*.txt)">Text Files (*.txt)</option>
+                                        <option value="Matrix Files (*.mtx)">Matrix Files (*.mtx)</option>
+                                        <option value="Encrypted Files (*.enc)">Encrypted Files (*.enc)</option>
+                                        <option value="All Files (*.*)">All Files (*.*)</option>
+                                    </select>
+                                </div>
+                                <div id="saveOptions" class="control-group">
+                                    <label for="fileContent">File Content:</label>
+                                    <textarea id="fileContent" rows="4" cols="30">Enter text to save...</textarea>
+                                </div>
+                                <button class="run-demo-btn" onclick="generateFileCode()">Generate Code</button>
+                            </div>
+                            <div class="demo-output">
+                                <div class="demo-result">
+                                    <h5>Generated File I/O Code</h5>
+                                    <p id="generatedFileCode">// Select an operation to generate code</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-application">
+                    <h4><i class="fas fa-lightbulb"></i> Application to Projects</h4>
+                    <p>File I/O operations are essential for both your Matrix Operations and Encryption projects:</p>
+                    <ul>
+                        <li><strong>Matrix Operations:</strong>
+                            <ul>
+                                <li>Save matrix data to files for later use</li>
+                                <li>Load matrix data from files</li>
+                                <li>Export calculation results</li>
+                                <li>Import matrices from external sources</li>
+                                <li>Create custom file formats for matrix data</li>
+                            </ul>
+                        </li>
+                        <li><strong>Encryption/Decryption:</strong>
+                            <ul>
+                                <li>Open text files for encryption</li>
+                                <li>Save encrypted text to files</li>
+                                <li>Load encrypted files for decryption</li>
+                                <li>Export decrypted text</li>
+                                <li>Handle different file encodings</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Guides Tutorial -->
+        <!-- Project Guides Tutorial -->
+        <section id="projects" class="tutorial-section">
+            <div class="tutorial-header">
+                <h2>Project Implementation Guides</h2>
+                <p>Complete step-by-step guides for implementing your required projects using Windows.h.</p>
+            </div>
+            <div class="tutorial-content">
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-calculator"></i> Project 1: 3x3 Matrix Operations</h3>
+                    <p>This project requires you to create a GUI application that performs various operations on 3x3
+                        matrices. Here's how to implement it:</p>
+                    <div class="visual-guide">
+                        <h4>Matrix Operations Application Structure</h4>
+                        <div class="visual-guide-content">
+                            <div class="visual-guide-image">
+                                <img src="https://placehold.co/500x300/667eea/ffffff?text=Matrix+GUI"
+                                    alt="Matrix Operations GUI">
+                            </div>
+                            <div class="visual-guide-text">
+                                <h5>Application Components</h5>
+                                <ul>
+                                    <li><strong>Input Matrix A:</strong> 3x3 grid of edit controls</li>
+                                    <li><strong>Input Matrix B:</strong> 3x3 grid of edit controls</li>
+                                    <li><strong>Operation Buttons:</strong> Add, Subtract, Multiply, Determinant,
+                                        Inverse, Transpose</li>
+                                    <li><strong>Result Display:</strong> Static controls or edit controls for output
+                                    </li>
+                                    <li><strong>File Operations:</strong> Load/Save buttons for matrix data</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="code-example">
+                        <h4>Matrix Operations Implementation</h4>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <pre><code class="language-cpp">// Define control IDs for matrix A
+#define ID_MATRIX_A_00 1000
+#define ID_MATRIX_A_01 1001
+#define ID_MATRIX_A_02 1002
+#define ID_MATRIX_A_10 1003
+#define ID_MATRIX_A_11 1004
+#define ID_MATRIX_A_12 1005
+#define ID_MATRIX_A_20 1006
+#define ID_MATRIX_A_21 1007
+#define ID_MATRIX_A_22 1008
+
+// Define control IDs for matrix B (if needed)
+#define ID_MATRIX_B_00 1010
+// ... (similar pattern)
+
+// Define operation buttons
+#define ID_BUTTON_ADD 2000
+#define ID_BUTTON_SUBTRACT 2001
+#define ID_BUTTON_MULTIPLY 2002
+#define ID_BUTTON_DETERMINANT 2003
+#define ID_BUTTON_INVERSE 2004
+#define ID_BUTTON_TRANSPOSE 2005
+
+// Define result display controls
+#define ID_RESULT_00 3000
+// ... (similar pattern)
+
+// In WM_CREATE case
+case WM_CREATE: {
+    // Create Matrix A input controls
+    int x = 50, y = 100;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            CreateWindowEx(0, L"EDIT", L"0",
+                WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
+                x + j * 60, y + i * 35, 50, 25,
+                hwnd, (HMENU)(ID_MATRIX_A_00 + i * 3 + j),
+                ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+        }
+    }
+    // Create operation buttons
+    CreateWindowEx(0, L"BUTTON", L"Add",
+        WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+        50, 250, 80, 30,
+        hwnd, (HMENU)ID_BUTTON_ADD,
+        ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+    // ... create other buttons
+    break;
+}
+
+// In WM_COMMAND case
+case WM_COMMAND: {
+    switch (LOWORD(wParam)) {
+        case ID_BUTTON_ADD: {
+            // Get matrix A values
+            int matrixA[3][3], matrixB[3][3], result[3][3];
+            GetMatrixValues(hwnd, matrixA, ID_MATRIX_A_00);
+            GetMatrixValues(hwnd, matrixB, ID_MATRIX_B_00);
+            // Perform addition
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    result[i][j] = matrixA[i][j] + matrixB[i][j];
+                }
+            }
+            // Display result
+            DisplayMatrixResult(hwnd, result, ID_RESULT_00);
+            break;
+        }
+        // ... handle other operations
+    }
+    break;
+}
+
+// Helper function to get matrix values
+void GetMatrixValues(HWND hwnd, int matrix[3][3], int baseId) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            wchar_t buffer[10];
+            GetWindowText(GetDlgItem(hwnd, baseId + i * 3 + j), buffer, 10);
+            matrix[i][j] = _wtoi(buffer);
+        }
+    }
+}
+
+// Helper function to display matrix result
+void DisplayMatrixResult(HWND hwnd, int matrix[3][3], int baseId) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            wchar_t buffer[20];
+            swprintf(buffer, 20, L"%d", matrix[i][j]);
+            SetWindowText(GetDlgItem(hwnd, baseId + i * 3 + j), buffer);
+        }
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="tutorial-subsection">
+                    <h3><i class="fas fa-lock"></i> Project 2: Encryption & Decryption GUI</h3>
+                    <p>This project requires you to create a GUI application that encrypts and decrypts text using
+                        various algorithms. Here's how to implement it:</p>
+                    <div class="visual-guide">
+                        <h4>Encryption Application Structure</h4>
+                        <div class="visual-guide-content">
+                            <div class="visual-guide-image">
+                                <img src="https://placehold.co/500x300/667eea/ffffff?text=Encryption+GUI"
+                                    alt="Encryption GUI">
+                            </div>
+                            <div class="visual-guide-text">
+                                <h5>Application Components</h5>
+                                <ul>
+                                    <li><strong>Plaintext Input:</strong> Multiline edit control</li>
+                                    <li><strong>Ciphertext Display:</strong> Multiline edit control</li>
+                                    <li><strong>Encryption Key:</strong> Edit control for key input</li>
+                                    <li><strong>Algorithm Selection:</strong> Combo box for cipher selection</li>
+                                    <li><strong>Action Buttons:</strong> Encrypt, Decrypt, Clear</li>
+                                    <li><strong>File Operations:</strong> Open, Save buttons</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="code-example">
+                        <h4>Encryption Implementation</h4>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <pre><code class="language-cpp">// Define control IDs
+#define ID_EDIT_PLAINTEXT 4000
+#define ID_EDIT_CIPHERTEXT 4001
+#define ID_EDIT_KEY 4002
+#define ID_COMBO_ALGORITHM 4003
+#define ID_BUTTON_ENCRYPT 4004
+#define ID_BUTTON_DECRYPT 4005
+#define ID_BUTTON_CLEAR 4006
+
+// Encryption algorithms
+enum CipherType { CAESAR, VIGENERE };
+
+// In WM_CREATE case
+case WM_CREATE: {
+    // Create plaintext input
+    CreateWindowEx(0, L"EDIT", L"",
+        WS_CHILD | WS_VISIBLE | WS_BORDER | ES_MULTILINE | ES_AUTOVSCROLL | WS_VSCROLL,
+        50, 100, 400, 150,
+        hwnd, (HMENU)ID_EDIT_PLAINTEXT,
+        ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+    // Create ciphertext display
+    CreateWindowEx(0, L"EDIT", L"",
+        WS_CHILD | WS_VISIBLE | WS_BORDER | ES_MULTILINE | ES_AUTOVSCROLL | WS_VSCROLL | ES_READONLY,
+        50, 300, 400, 150,
+        hwnd, (HMENU)ID_EDIT_CIPHERTEXT,
+        ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+    // Create key input
+    CreateWindowEx(0, L"EDIT", L"",
+        WS_CHILD | WS_VISIBLE | WS_BORDER,
+        50, 500, 200, 25,
+        hwnd, (HMENU)ID_EDIT_KEY,
+        ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+    // Create algorithm combo box
+    HWND hCombo = CreateWindowEx(0, L"COMBOBOX", L"",
+        WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST,
+        300, 500, 150, 200,
+        hwnd, (HMENU)ID_COMBO_ALGORITHM,
+        ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+    SendMessage(hCombo, CB_ADDSTRING, 0, (LPARAM)L"Caesar Cipher");
+    SendMessage(hCombo, CB_ADDSTRING, 0, (LPARAM)L"Vigenère Cipher");
+    SendMessage(hCombo, CB_SETCURSEL, 0, 0);
+    // Create buttons
+    CreateWindowEx(0, L"BUTTON", L"Encrypt",
+        WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+        50, 550, 100, 30,
+        hwnd, (HMENU)ID_BUTTON_ENCRYPT,
+        ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+    CreateWindowEx(0, L"BUTTON", L"Decrypt",
+        WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+        160, 550, 100, 30,
+        hwnd, (HMENU)ID_BUTTON_DECRYPT,
+        ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+    CreateWindowEx(0, L"BUTTON", L"Clear",
+        WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+        270, 550, 100, 30,
+        hwnd, (HMENU)ID_BUTTON_CLEAR,
+        ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+    break;
+}
+
+// In WM_COMMAND case
+case WM_COMMAND: {
+    switch (LOWORD(wParam)) {
+        case ID_BUTTON_ENCRYPT: {
+            // Get plaintext
+            wchar_t plaintext[1024];
+            GetWindowText(GetDlgItem(hwnd, ID_EDIT_PLAINTEXT), plaintext, 1024);
+            // Get key
+            wchar_t key[100];
+            GetWindowText(GetDlgItem(hwnd, ID_EDIT_KEY), key, 100);
+            // Get algorithm
+            int algorithm = SendMessage(GetDlgItem(hwnd, ID_COMBO_ALGORITHM), CB_GETCURSEL, 0, 0);
+            // Encrypt
+            wchar_t ciphertext[1024];
+            if (algorithm == CAESAR) {
+                CaesarEncrypt(plaintext, key, ciphertext);
+            } else if (algorithm == VIGENERE) {
+                VigenereEncrypt(plaintext, key, ciphertext);
+            }
+            // Display result
+            SetWindowText(GetDlgItem(hwnd, ID_EDIT_CIPHERTEXT), ciphertext);
+            break;
+        }
+        case ID_BUTTON_DECRYPT: {
+            // Similar decryption logic
+            break;
+        }
+        case ID_BUTTON_CLEAR: {
+            SetWindowText(GetDlgItem(hwnd, ID_EDIT_PLAINTEXT), L"");
+            SetWindowText(GetDlgItem(hwnd, ID_EDIT_CIPHERTEXT), L"");
+            SetWindowText(GetDlgItem(hwnd, ID_EDIT_KEY), L"");
+            break;
+        }
+    }
+    break;
+}
+
+// Caesar cipher implementation
+void CaesarEncrypt(const wchar_t* plaintext, const wchar_t* key, wchar_t* ciphertext) {
+    int shift = _wtoi(key) % 26;
+    int i = 0;
+    while (plaintext[i] != L'\0') {
+        if (plaintext[i] >= L'A' && plaintext[i] <= L'Z') {
+            ciphertext[i] = L'A' + (plaintext[i] - L'A' + shift) % 26;
+        } else if (plaintext[i] >= L'a' && plaintext[i] <= L'z') {
+            ciphertext[i] = L'a' + (plaintext[i] - L'a' + shift) % 26;
+        } else {
+            ciphertext[i] = plaintext[i];
+        }
+        i++;
+    }
+    ciphertext[i] = L'\0';
+}
+
+// Vigenère cipher implementation
+void VigenereEncrypt(const wchar_t* plaintext, const wchar_t* key, wchar_t* ciphertext) {
+    int keyLen = wcslen(key);
+    int i = 0, j = 0;
+    while (plaintext[i] != L'\0') {
+        if (plaintext[i] >= L'A' && plaintext[i] <= L'Z') {
+            int shift = toupper(key[j % keyLen]) - L'A';
+            ciphertext[i] = L'A' + (plaintext[i] - L'A' + shift) % 26;
+            j++;
+        } else if (plaintext[i] >= L'a' && plaintext[i] <= L'z') {
+            int shift = tolower(key[j % keyLen]) - L'a';
+            ciphertext[i] = L'a' + (plaintext[i] - L'a' + shift) % 26;
+            j++;
+        } else {
+            ciphertext[i] = plaintext[i];
+        }
+        i++;
+    }
+    ciphertext[i] = L'\0';
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-application">
+                    <h4><i class="fas fa-check-circle"></i> Project Requirements Checklist</h4>
+                    <p>Make sure your projects meet all requirements:</p>
+                    <ul>
+                        <li><strong>Matrix Operations Project:</strong>
+                            <ul>
+                                <li>GUI with proper layout and controls</li>
+                                <li>Input validation for matrix values</li>
+                                <li>Implementation of all required operations</li>
+                                <li>File save/load functionality</li>
+                                <li>Error handling for invalid operations</li>
+                                <li>Clear and readable code structure</li>
+                            </ul>
+                        </li>
+                        <li><strong>Encryption/Decryption Project:</strong>
+                            <ul>
+                                <li>GUI with proper layout and controls</li>
+                                <li>Multiple encryption algorithms</li>
+                                <li>File input/output capabilities</li>
+                                <li>Key management and validation</li>
+                                <li>Proper error handling</li>
+                                <li>Clear distinction between encrypt/decrypt modes</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About</h3>
+                    <p style="color: #ccc; line-height: 1.6;">
+                        WinGUI C++ is dedicated to teaching Windows GUI programming to undergraduate students through
+                        interactive tutorials and practical examples.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#basics">Tutorials</a></li>
+                        <li><a href="#controls">GUI Controls</a></li>
+                        <li><a href="#events">Event Handling</a></li>
+                        <li><a href="#projects">Student Projects</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="https://docs.microsoft.com/en-us/windows/win32/" target="_blank">Windows API
+                                Docs</a></li>
+                        <li><a href="https://www.youtube.com/results?search_query=windows+gui+programming+c%2B%2B"
+                                target="_blank">YouTube Tutorials</a></li>
+                        <li><a href="https://github.com/search?q=windows+gui+c%2B%2B" target="_blank">Sample
+                                Projects</a></li>
+                        <li><a href="https://stackoverflow.com/questions/tagged/winapi" target="_blank">Community
+                                Forum</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="https://github.com/M-Ahmad193" target="_blank"><i class="fab fa-github"></i>
+                                GitHub</a></li>
+                        <li><a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+                        </li>
+                        <li><a href="https://www.linkedin.com/in/muhammad-ahmad193/" target="_blank"><i
+                                    class="fab fa-linkedin"></i> LinkedIn</a>
+                        </li>
+                        <li><a href="mailto:m.ahmad@nu.edu.pk"><i class="fas fa-envelope"></i> Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 WinGUI C++ Tutorial. All rights reserved. | Made with <i class="fas fa-heart"
+                        style="color: #ff6b35;"></i> for students</p>
+                <p class="developer-credit">Site developed by Engr. Muhammad Ahmad</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Success!</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+    <script>
+        // Tutorial navigation
+        function showTutorial(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.tutorial-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all nav items
+            document.querySelectorAll('.tutorial-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked nav item
+            event.target.closest('.tutorial-nav-item').classList.add('active');
+
+            // Re-highlight code
+            Prism.highlightAll();
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement.querySelector('code');
+            const textArea = document.createElement('textarea');
+            textArea.value = codeBlock.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            // Update button text
+            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            button.classList.add('copied');
+
+            setTimeout(() => {
+                button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                button.classList.remove('copied');
+            }, 2000);
+
+            showToast('Code copied to clipboard!');
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Generate window code
+        function generateWindowCode() {
+            const title = document.getElementById('windowTitle').value;
+            const width = document.getElementById('windowWidth').value;
+            const height = document.getElementById('windowHeight').value;
+            const bgColor = document.getElementById('backgroundColor').value;
+
+            const code = `// Window Creation Code
+HWND hwnd = CreateWindowEx(
+    0,                              // Optional window styles
+    L"${title}",                     // Window title
+    CLASS_NAME,                      // Window class
+    WS_OVERLAPPEDWINDOW,           // Window style
+    CW_USEDEFAULT, CW_USEDEFAULT,  // Position (x, y)
+    ${width}, ${height},               // Size (width, height)
+    NULL,                          // Parent window
+    NULL,                          // Menu
+    hInstance,                     // Instance handle
+    NULL                           // Additional application data
+);
+
+// Set background color
+WNDCLASSEX wc = {};
+wc.hbrBackground = (HBRUSH)(${bgColor});
+RegisterClassEx(&wc);
+
+ShowWindow(hwnd, nCmdShow);
+UpdateWindow(hwnd);`;
+
+            document.getElementById('generatedCode').textContent = code;
+            showToast('Window code generated!');
+        }
+
+        // Generate control code
+        function generateControlCode() {
+            const type = document.getElementById('controlType').value;
+            const text = document.getElementById('controlText').value;
+            const x = document.getElementById('controlX').value;
+            const y = document.getElementById('controlY').value;
+            const width = document.getElementById('controlWidth').value;
+            const height = document.getElementById('controlHeight').value;
+
+            let style = 'WS_CHILD | WS_VISIBLE';
+            let additionalStyle = '';
+
+            if (type === 'BUTTON') {
+                const buttonStyle = document.getElementById('buttonStyle').value;
+                style += ' | ' + buttonStyle;
+            } else if (type === 'EDIT') {
+                const editStyle = document.getElementById('editStyle').value;
+                style += ' | WS_BORDER | ' + editStyle;
+            } else if (type === 'STATIC') {
+                style += ' | SS_CENTER';
+            } else if (type === 'COMBOBOX') {
+                style += ' | CBS_DROPDOWNLIST';
+            }
+
+            const code = `// Create ${type} Control
+HWND h${type} = CreateWindowEx(
+    0, L"${type}", L"${text}",
+    ${style},
+    ${x}, ${y}, ${width}, ${height},
+    hwnd, (HMENU)CONTROL_ID,
+    hInstance, NULL
+);`;
+
+            document.getElementById('generatedControlCode').textContent = code;
+            showToast('Control code generated!');
+        }
+
+        // Update control options based on type
+        function updateControlOptions() {
+            const type = document.getElementById('controlType').value;
+
+            document.getElementById('buttonStyleGroup').style.display = 'none';
+            document.getElementById('editStyleGroup').style.display = 'none';
+
+            if (type === 'BUTTON') {
+                document.getElementById('buttonStyleGroup').style.display = 'block';
+            } else if (type === 'EDIT') {
+                document.getElementById('editStyleGroup').style.display = 'block';
+            }
+        }
+
+        // Generate event handling code
+        function generateEventCode() {
+            const eventType = document.getElementById('eventType').value;
+            let code = '';
+
+            switch (eventType) {
+                case 'WM_COMMAND':
+                    const controlId = document.getElementById('controlId').value;
+                    code = `// Handle button click
+case WM_COMMAND: {
+    switch (LOWORD(wParam)) {
+        case ${controlId}: {
+            // Handle button click here
+            MessageBox(hwnd, L"Button clicked!", L"Info", MB_OK | MB_ICONINFORMATION);
+            break;
+        }
+    }
+    break;
+}`;
+                    break;
+                case 'WM_CHAR':
+                    const charInput = document.getElementById('charInput').value;
+                    code = `// Handle character input
+case WM_CHAR: {
+    wchar_t ch = (wchar_t)wParam;
+    
+    // Validate character '${charInput}'
+    if (ch == '${charInput}') {
+        // Handle valid character
+    } else {
+        // Reject invalid character
+        return 0;
+    }
+    break;
+}`;
+                    break;
+                case 'WM_PAINT':
+                    const paintText = document.getElementById('paintText').value;
+                    code = `// Handle painting
+case WM_PAINT: {
+    PAINTSTRUCT ps;
+    HDC hdc = BeginPaint(hwnd, &ps);
+    
+    // Draw text
+    TextOut(hdc, 50, 50, L"${paintText}", ${paintText.length});
+    
+    EndPaint(hwnd, &ps);
+    return 0;
+}`;
+                    break;
+                case 'WM_LBUTTONDOWN':
+                    const mouseX = document.getElementById('mouseX').value;
+                    const mouseY = document.getElementById('mouseY').value;
+                    code = `// Handle mouse click
+case WM_LBUTTONDOWN: {
+    int xPos = GET_X_LPARAM(lParam);
+    int yPos = GET_Y_LPARAM(lParam);
+    
+    // Check if click is at (${mouseX}, ${mouseY})
+    if (xPos >= ${mouseX} && xPos <= ${mouseX} + 100 && 
+        yPos >= ${mouseY} && yPos <= ${mouseY} + 30) {
+        MessageBox(hwnd, L"Area clicked!", L"Info", MB_OK | MB_ICONINFORMATION);
+    }
+    return 0;
+}`;
+                    break;
+            }
+
+            document.getElementById('generatedEventCode').textContent = code;
+            showToast('Event handler code generated!');
+        }
+
+        // Update event demo options
+        function updateEventDemo() {
+            const eventType = document.getElementById('eventType').value;
+
+            document.getElementById('commandOptions').style.display = 'none';
+            document.getElementById('charOptions').style.display = 'none';
+            document.getElementById('paintOptions').style.display = 'none';
+            document.getElementById('mouseOptions').style.display = 'none';
+
+            switch (eventType) {
+                case 'WM_COMMAND':
+                    document.getElementById('commandOptions').style.display = 'block';
+                    break;
+                case 'WM_CHAR':
+                    document.getElementById('charOptions').style.display = 'block';
+                    break;
+                case 'WM_PAINT':
+                    document.getElementById('paintOptions').style.display = 'block';
+                    break;
+                case 'WM_LBUTTONDOWN':
+                    document.getElementById('mouseOptions').style.display = 'block';
+                    break;
+            }
+        }
+
+        // Generate graphics code
+        function generateGraphicsCode() {
+            const shapeType = document.getElementById('shapeType').value;
+            const x = document.getElementById('shapeX').value;
+            const y = document.getElementById('shapeY').value;
+            const width = document.getElementById('shapeWidth').value;
+            const height = document.getElementById('shapeHeight').value;
+            const penColor = document.getElementById('penColor').value;
+            const brushColor = document.getElementById('brushColor').value;
+            const textContent = document.getElementById('textContent').value;
+
+            let code = '';
+
+            switch (shapeType) {
+                case 'Rectangle':
+                    code = `// Draw Rectangle
+HPEN hPen = CreatePen(PS_SOLID, 2, ${penColor});
+HBRUSH hBrush = CreateSolidBrush(${brushColor});
+HPEN hOldPen = (HPEN)SelectObject(hdc, hPen);
+HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
+
+Rectangle(hdc, ${x}, ${y}, ${x + width}, ${y + height});
+
+SelectObject(hdc, hOldPen);
+SelectObject(hdc, hOldBrush);
+DeleteObject(hPen);
+DeleteObject(hBrush);`;
+                    break;
+                case 'Ellipse':
+                    code = `// Draw Ellipse
+HPEN hPen = CreatePen(PS_SOLID, 2, ${penColor});
+HBRUSH hBrush = CreateSolidBrush(${brushColor});
+HPEN hOldPen = (HPEN)SelectObject(hdc, hPen);
+HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
+
+Ellipse(hdc, ${x}, ${y}, ${x + width}, ${y + height});
+
+SelectObject(hdc, hOldPen);
+SelectObject(hdc, hOldBrush);
+DeleteObject(hPen);
+DeleteObject(hBrush);`;
+                    break;
+                case 'Line':
+                    code = `// Draw Line
+HPEN hPen = CreatePen(PS_SOLID, 2, ${penColor});
+HPEN hOldPen = (HPEN)SelectObject(hdc, hPen);
+
+MoveToEx(hdc, ${x}, ${y}, NULL);
+LineTo(hdc, ${x + width}, ${y + height});
+
+SelectObject(hdc, hOldPen);
+DeleteObject(hPen);`;
+                    break;
+                case 'Text':
+                    code = `// Draw Text
+HPEN hPen = CreatePen(PS_SOLID, 1, ${penColor});
+HPEN hOldPen = (HPEN)SelectObject(hdc, hPen);
+
+TextOut(hdc, ${x}, ${y}, L"${textContent}", ${textContent.length});
+
+SelectObject(hdc, hOldPen);
+DeleteObject(hPen);`;
+                    break;
+            }
+
+            document.getElementById('generatedGraphicsCode').textContent = code;
+            showToast('Graphics code generated!');
+        }
+
+        // Update shape options
+        function updateShapeOptions() {
+            const shapeType = document.getElementById('shapeType').value;
+
+            document.getElementById('textOptions').style.display = 'none';
+
+            if (shapeType === 'Text') {
+                document.getElementById('textOptions').style.display = 'block';
+            }
+        }
+
+        // Generate file I/O code
+        function generateFileCode() {
+            const operation = document.getElementById('fileOperation').value;
+            const fileType = document.getElementById('fileType').value;
+            const content = document.getElementById('fileContent').value;
+
+            let code = '';
+
+            switch (operation) {
+                case 'open':
+                    code = `// Open File Dialog
+OPENFILENAME ofn;
+wchar_t fileName[MAX_PATH] = L"";
+ZeroMemory(&ofn, sizeof(ofn));
+ofn.lStructSize = sizeof(ofn);
+ofn.hwndOwner = hwnd;
+ofn.lpstrFilter = L"${fileType}\\0*.txt\\0All Files (*.*)\\0*.*\\0";
+ofn.lpstrFile = fileName;
+ofn.nMaxFile = MAX_PATH;
+ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+
+if (GetOpenFileName(&ofn)) {
+    HANDLE hFile = CreateFile(fileName, GENERIC_READ, FILE_SHARE_READ, NULL, 
+                          OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (hFile != INVALID_HANDLE_VALUE) {
+        // Read file content here
+        CloseHandle(hFile);
+    }
+}`;
+                    break;
+                case 'save':
+                    code = `// Save File Dialog
+OPENFILENAME ofn;
+wchar_t fileName[MAX_PATH] = L"";
+ZeroMemory(&ofn, sizeof(ofn));
+ofn.lStructSize = sizeof(ofn);
+ofn.hwndOwner = hwnd;
+ofn.lpstrFilter = L"${fileType}\\0*.txt\\0All Files (*.*)\\0*.*\\0";
+ofn.lpstrFile = fileName;
+ofn.nMaxFile = MAX_PATH;
+ofn.Flags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
+
+if (GetSaveFileName(&ofn)) {
+    HANDLE hFile = CreateFile(fileName, GENERIC_WRITE, 0, NULL, 
+                          CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (hFile != INVALID_HANDLE_VALUE) {
+        // Write content: "${content}"
+        const char* buffer = "${content}";
+        DWORD bytesWritten;
+        WriteFile(hFile, buffer, strlen(buffer), &bytesWritten, NULL);
+        CloseHandle(hFile);
+    }
+}`;
+                    break;
+                case 'append':
+                    code = `// Append to File
+OPENFILENAME ofn;
+wchar_t fileName[MAX_PATH] = L"";
+ZeroMemory(&ofn, sizeof(ofn));
+ofn.lStructSize = sizeof(ofn);
+ofn.hwndOwner = hwnd;
+ofn.lpstrFilter = L"${fileType}\\0*.txt\\0All Files (*.*)\\0*.*\\0";
+ofn.lpstrFile = fileName;
+ofn.nMaxFile = MAX_PATH;
+ofn.Flags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
+
+if (GetOpenFileName(&ofn)) {
+    HANDLE hFile = CreateFile(fileName, GENERIC_WRITE, 0, NULL, 
+                          OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (hFile != INVALID_HANDLE_VALUE) {
+        // Append content: "${content}"
+        const char* buffer = "${content}";
+        SetFilePointer(hFile, 0, NULL, FILE_END);
+        DWORD bytesWritten;
+        WriteFile(hFile, buffer, strlen(buffer), &bytesWritten, NULL);
+        CloseHandle(hFile);
+    }
+}`;
+                    break;
+            }
+
+            document.getElementById('generatedFileCode').textContent = code;
+            showToast('File I/O code generated!');
+        }
+
+        // Update file options
+        function updateFileOptions() {
+            const operation = document.getElementById('fileOperation').value;
+
+            document.getElementById('saveOptions').style.display = 'none';
+
+            if (operation === 'save' || operation === 'append') {
+                document.getElementById('saveOptions').style.display = 'block';
+            }
+        }
+
+        // Scroll to section
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Initialize Prism.js
+        Prism.highlightAll();
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements
+        document.querySelectorAll('.tutorial-subsection, .code-example, .interactive-demo').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s, transform 0.5s';
+            observer.observe(el);
+        });
+        // Show Tutorial Section
+        function showTutorial(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.tutorial-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+
+            // Show selected section
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+
+            // Update nav items
+            document.querySelectorAll('.tutorial-nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('onclick').includes(sectionId)) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Update progress tracker
+            document.querySelectorAll('.progress-item').forEach(item => {
+                const onclick = item.getAttribute('onclick');
+                if (onclick && onclick.includes(sectionId)) {
+                    item.classList.add('completed'); // Mark as visited/completed
+                }
+            });
+
+            // Scroll to main content
+            document.querySelector('main').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Copy Code Function
+        function copyCode(btn) {
+            const codeBlock = btn.nextElementSibling.querySelector('code');
+            const text = codeBlock.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Show Toast Function
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast show';
+            toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+    </script><br><br><br>
+</body>
+
+</html>

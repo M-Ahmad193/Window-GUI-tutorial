@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Resources | Windows GUI Programming with C++</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0078d4;
+            --primary-dark: #005a9e;
+            --secondary: #ff6b35;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --text: #333;
+            --border: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 120, 212, 0.3);
+        }
+
+        /* Resources Section */
+        .resources-section {
+            background: white;
+            border-radius: 20px;
+            padding: 4rem 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .resources-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .resources-header h1 {
+            font-size: 3rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .resources-header h1 i {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .resources-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .resource-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary);
+        }
+
+        .resource-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .resource-card:hover .resource-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .resource-icon i {
+            font-size: 2.2rem;
+            color: white;
+        }
+
+        .resource-card h3 {
+            font-size: 1.4rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+            min-height: 65px;
+            font-weight: 700;
+        }
+
+        .resource-card p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+            font-size: 1rem;
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+            box-shadow: 0 4px 15px rgba(0, 120, 212, 0.3);
+        }
+
+        .resource-link:hover {
+            transform: translateX(8px);
+            box-shadow: 0 6px 25px rgba(0, 120, 212, 0.4);
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+        }
+
+        .resource-link i {
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+
+        .resource-link:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Category Badge */
+        .category-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 6px 14px;
+            background: rgba(0, 120, 212, 0.1);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--text);
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        .developer-credit {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .resources-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .resources-header h1 {
+                font-size: 2rem;
+            }
+
+            .resources-header p {
+                font-size: 1rem;
+            }
+
+            .resource-card {
+                padding: 2rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Scroll Animation */
+        .resource-card {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .resource-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .resource-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .resource-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .resource-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .resource-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .resource-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .resource-card:nth-child(7) {
+            animation-delay: 0.7s;
+        }
+
+        .resource-card:nth-child(8) {
+            animation-delay: 0.8s;
+        }
+
+        .resource-card:nth-child(9) {
+            animation-delay: 0.9s;
+        }
+
+        .resource-card:nth-child(10) {
+            animation-delay: 1s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="container">
+        <nav>
+            <a href="web.html" class="logo">
+                <i class="fab fa-windows"></i>
+                <span>WinGUI C++</span>
+            </a>
+            <a href="web.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Tutorials
+            </a>
+        </nav>
+    </header><br><br>
+
+    <!-- Resources Section -->
+    <section class="resources-section container">
+        <div class="resources-header">
+            <h1><i class="fas fa-book-open"></i> Learning Resources</h1>
+            <p>Explore these carefully curated tutorials, guides, and video courses to master Windows GUI programming
+                with C++ and the Win32 API. Perfect companions for your Matrix Operations and Encryption projects!</p>
+        </div>
+
+        <div class="resources-grid">
+            <!-- Resource Card 1 -->
+            <div class="resource-card">
+                <span class="category-badge">Tutorial</span>
+                <div class="resource-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Simplilearn C++ GUI Tutorial</h3>
+                <p>A broad overview of C++ GUI options, including basics of Win32 API with windows.h for simple
+                    interfaces. Great for conceptual start before diving deep into your projects.</p>
+                <a href="https://www.simplilearn.com/tutorials/cpp-tutorial/cpp-gui" target="_blank"
+                    class="resource-link">
+                    Visit Tutorial <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+
+            <!-- Resource Card 2 -->
+            <div class="resource-card">
+                <span class="category-badge">Official Docs</span>
+                <div class="resource-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <i class="fab fa-microsoft"></i>
+                </div>
+                <h3>Microsoft Learn: Get Started with Win32 and C++</h3>
+                <p>Official step-by-step guide from Microsoft. Starts with creating your first window using windows.h,
+                    message loops, and basic events. Ideal for project foundations.</p>
+                <a href="https://learn.microsoft.com/en-us/windows/win32/learnwin32/learn-to-program-for-windows"
+                    target="_blank" class="resource-link">
+                    Visit Tutorial <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+
+            <!-- Resource Card 3 -->
+            <div class="resource-card">
+                <span class="category-badge">Hands-On</span>
+                <div class="resource-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>theForger's Win32 API Tutorial</h3>
+                <p>Classic, hands-on tutorial with full code examples for dialogs, buttons, text boxes, and more.
+                    Download the ZIP for compilable samples—perfect for encryption file pickers or matrix buttons.</p>
+                <a href="https://winprog.org/tutorial/" target="_blank" class="resource-link">
+                    Visit Tutorial <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+
+            <!-- Resource Card 4 -->
+            <div class="resource-card">
+                <span class="category-badge">E-Book</span>
+                <div class="resource-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3>ZetCode: Windows API Tutorial</h3>
+                <p>Clear C/C++ focused lessons on windows.h for GUI elements like windows, menus, and controls. Includes
+                    114 code snippets in an e-book option for offline learning.</p>
+                <a href="https://zetcode.com/gui/winapi/" target="_blank" class="resource-link">
+                    Visit Tutorial <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+
+            <!-- Resource Card 5 -->
+            <div class="resource-card">
+                <span class="category-badge">Quick Start</span>
+                <div class="resource-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                    <i class="fab fa-dev"></i>
+                </div>
+                <h3>DEV Community: Introduction to Windows GUI with C++</h3>
+                <p>Quick "Hello World" window tutorial using Win32 API. Covers WndProc, messages, and painting—easy to
+                    extend for project inputs and custom controls.</p>
+                <a href="https://dev.to/iamutkarshyadav/introduction-to-windows-gui-programming-with-c-building-your-first-window-4265"
+                    target="_blank" class="resource-link">
+                    Visit Tutorial <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+
+            <!-- Resource Card 6 -->
+            <div class="resource-card">
+                <span class="category-badge">Walkthrough</span>
+                <div class="resource-icon" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+                    <i class="fas fa-desktop"></i>
+                </div>
+                <h3>Microsoft Learn: Create a Traditional Windows Desktop App</h3>
+                <p>Comprehensive walkthrough with full code for a basic app using windows.h. Includes compilation tips
+                    for Visual Studio—adapt for matrix operations UI.</p>
+                <a href="https://learn.microsoft.com/en-us/cpp/windows/walkthrough-creating-windows-desktop-applications-cpp?view=msvc-170"
+                    target="_blank" class="resource-link">
+                    Visit Tutorial <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+
+            <!-- Resource Card 7 -->
+            <div class="resource-card">
+                <span class="category-badge">Reference</span>
+                <div class="resource-icon" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>RipTutorial: Win32 API - Hello World & Getting Started</h3>
+                <p>Simple entry points with code for WinMain and message handling. Excellent reference for debugging
+                    project GUIs and understanding the message loop.</p>
+                <a href="https://riptutorial.com/winapi" target="_blank" class="resource-link">
+                    Visit Tutorial <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+
+            <!-- Resource Card 8 -->
+            <div class="resource-card">
+                <span class="category-badge">Deep Dive</span>
+                <div class="resource-icon" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+                    <i class="fas fa-file-code"></i>
+                </div>
+                <h3>Bogotobogo: Win32 API Tutorial Introduction</h3>
+                <p>Explains data types, structures, and basics of windows.h in C++. Comprehensive coverage that ties
+                    into MFC if you want to level up later.</p>
+                <a href="https://www.bogotobogo.com/Win32API/Win32API_Introduction.php" target="_blank"
+                    class="resource-link">
+                    Visit Tutorial <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+
+            <!-- Resource Card 9 -->
+            <div class="resource-card">
+                <span class="category-badge">Video Series</span>
+                <div class="resource-icon" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                    <i class="fab fa-youtube"></i>
+                </div>
+                <h3>YouTube Playlist: C/C++ Win32 API Tutorials</h3>
+                <p>Complete video series on windows.h for GUI programming. Visual walkthroughs for creating windows and
+                    handling events—perfect for visual learners.</p>
+                <a href="https://www.youtube.com/playlist?list=PLWzp0Bbyy_3i750dsUj7yq4JrPOIUR_NK" target="_blank"
+                    class="resource-link">
+                    Watch Playlist <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+
+            <!-- Resource Card 10 -->
+            <div class="resource-card">
+                <span class="category-badge">Video Tutorial</span>
+                <div class="resource-icon" style="background: linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%);">
+                    <i class="fab fa-youtube"></i>
+                </div>
+                <h3>YouTube: Windows GUI Programming Part 1</h3>
+                <p>Step-by-step video on creating a basic window with C++/Win32. Great for visual learners tackling
+                    project setups and understanding the fundamentals.</p>
+                <a href="https://www.youtube.com/watch?v=8GCvZs55mEM" target="_blank" class="resource-link">
+                    Watch Video <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>
+    </section><br>
+
+    <!-- Footer -->
+    <footer class="container">
+        <p>&copy; 2025 WinGUI C++ Tutorial. All rights reserved. | Made with <i class="fas fa-heart"
+                style="color: #ff6b35;"></i> for students</p>
+        <p class="developer-credit">Site developed by Engr. Muhammad Ahmad</p>
+    </footer><br><br><br>
+</body>
+
+</html>
